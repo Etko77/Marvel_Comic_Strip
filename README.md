@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Comic Strip Viewer 🦸‍♂️
 
 A React Native mobile application that allows you to browse and explore Marvel comics using the Marvel Comics API. Navigate through thousands of comics, discover random issues, and enjoy a seamless comic browsing experience.
@@ -204,3 +205,7 @@ If you encounter any issues or have questions:
 ---
 
 **Happy Comic Browsing!** 🦸‍♀️
+=======
+# Marvel_Comic_Strip
+React-native application to rbowse through different comics using marvel dev api
+>>>>>>> 85b37da898e956377c29a79f00c88407c83ae869
