@@ -22,6 +22,7 @@ export default function ComicViewer() {
   const [totalComics, setTotalComics] = useState(0);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
+  const [offset, setOffset] = useState(0);
 
   useEffect(() => {
     loadInitialComics();
@@ -41,6 +42,7 @@ export default function ComicViewer() {
       setComics(fetchedComics);
       setTotalComics(total);
       setCurrentIndex(0);
+      setOffset(fetchedComics.length);
     } catch (error) {
       console.error('Error loading initial comics:', error);
       Alert.alert('Error', 'Failed to load comics. Please check your internet connection and try again.');
@@ -83,11 +85,13 @@ export default function ComicViewer() {
     const nextIndex = currentIndex + 1;
     if (nextIndex < comics.length) {
       setCurrentIndex(nextIndex);
-    } else if (comics.length < totalComics) {
+    } else if (offset < totalComics) {
       setLoadingMore(true);
-      const { comics: newComics } = await marvelApi.getComics(comics.length);
+      const { comics: newComics, total } = await marvelApi.getComics(offset);
       setComics([...comics, ...newComics]);
+      setTotalComics(total);
       setCurrentIndex(nextIndex);
+      setOffset(offset + newComics.length);
       setLoadingMore(false);
     }
   };
@@ -101,6 +105,7 @@ export default function ComicViewer() {
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
+        
         <Text style={styles.loadingText}>Loading Marvel Comics...</Text>
         <ActivityIndicator size="large" color="#ec1d24" />
       </View>
@@ -168,7 +173,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        // backgroundColor: '#1a1a1a',
+        
     },
     loadingText: {
         marginTop: 20,
@@ -179,7 +184,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#1a1a1a',
+        
     },
     errorText: {
         fontSize: 18,
